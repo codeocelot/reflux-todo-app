@@ -5,6 +5,7 @@ module.exports = {
     './assets/js/app.jsx'
     ,'./node_modules/bootstrap-material-design/dist/css/material.min.css'
     ,'./node_modules/bootstrap-material-design/dist/js/material.min.js'
+		,'./assets/styles/style.scss'
     //,'./assets/s/style.scss'
 		// './node_modules/bootstrap/dist/css/bootstrap.css',
 		// './node_modules/bootstrap/dist/css/bootstrap-theme.css',
