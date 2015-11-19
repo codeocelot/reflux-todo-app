@@ -57,7 +57,7 @@ module.exports = React.createClass({
   render(){
     return (
       <div>
-        <AppBar title="My AppBar" ></AppBar>
+        <AppBar title="What should I do?" ></AppBar>
         <Card>
           <CardHeader>
             <TextField placeholder="New Todo" valueLink={this.linkState('todoinput')}/>

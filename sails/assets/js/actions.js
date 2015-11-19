@@ -5,6 +5,8 @@ module.exports = Reflux.createActions([
   'getTodosFromServer',
   'updateList',
   'deleteTodo',
+  'updateTodo',
   'netCreate',
-  'netDestroy'
+  'netDestroy',
+  'netUpdate'
 ])

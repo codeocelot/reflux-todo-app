@@ -11,6 +11,9 @@ module.exports = {
 		content:{
 			type:'string',
 			required:true
-		}
+		},
+    isComplete:{
+      type:'boolean'
+    }
   }
 };

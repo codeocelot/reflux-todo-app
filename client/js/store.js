@@ -16,8 +16,31 @@ module.exports = Reflux.createStore({
   onUpdateList(){
     this.updateList();
   },
+  // onUpdateStatus(id,status){
+  //   console.log('in the store')
+  //   var t = _.findWhere(this.todos,{id});
+  //   t.status="done"
+  //   console.log('store found: ',t);
+  //   this.trigger(this.todos);
+  //
+  // },
+  onTodoUpdate(id){
+    // removes from own store
+    console.log('in store')
+    this.todos = _.without(
+      this.todos
+      ,_.findWhere(
+        this.todos
+        ,{id}
+      )
+    );
+    // remove from db
+    rmTodo(id);
+    this.trigger(this.todos);
+  },
   onDeleteTodo(id){
     // removes from own store
+    console.log('in delete')
     this.todos = _.without(
       this.todos
       ,_.findWhere(

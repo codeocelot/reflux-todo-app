@@ -15,6 +15,15 @@ module.exports = Reflux.createStore({
   onUpdateList(){
     this.updateList();
   },
+  onUpdateTodo(id,status){
+    var t = _.findWhere(this.todos,{id});
+    t.status = (t.status ==='incomplete') ? 'done' : 'incomplete';
+    t.isComplete = (t.status === 'done');
+    console.log('in update todo')
+    putToNet(t);
+
+    this.trigger(this.todos);
+  },
   onDeleteTodo(id){
     // removes from own store
     this.todos = _.without(
@@ -39,6 +48,16 @@ module.exports = Reflux.createStore({
       this.todos = this.todos.concat(evt.data);
     }
     this.trigger(this.todos);
+  },
+  onNetUpdate(evt){
+    var id = evt.data.id
+    evt.data.isComplete = true;
+    var index = _.findIndex(this.todos,{id});
+    this.todos[index] = evt.data;
+    this.trigger(this.todos)
+    // var t = _.findWhere(this.todos,{id});
+    // t = evt.data
+    // this.trigger(this.todos);
   },
   onNetDestroy(evt){
     var id = evt.id;
@@ -86,4 +105,8 @@ var deleteToNet = (id,callback) =>{
     // todo
     callback(null,res);
   })
+}
+var putToNet = (todo,callback) =>{
+  console.log('puttinging: ', todo)
+  io.socket.put(`/todo/${todo.id}`,todo,(res)=>{if(callback)callback(null,res)})
 }
