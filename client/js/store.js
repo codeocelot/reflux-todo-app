@@ -19,13 +19,16 @@ module.exports = Reflux.createStore({
     this.updateList();
   },
   onDeleteTodo(id){
+    // removes from own store
     this.todos = _.without(
       this.todos
       ,_.findWhere(
         this.todos
         ,{id}
       )
-    )
+    );
+    // remove from db
+    rmTodo(id);
     this.trigger(this.todos);
   },
   updateList(){
@@ -35,6 +38,20 @@ module.exports = Reflux.createStore({
     })
   }
 })
+
+function rmTodo(id){
+  $.ajax(`http://localhost:1337/todo/${id}`
+    ,{
+      method:"DELETE",
+      success:function(){
+        console.log('successful deleting');
+      },
+      error:function(jqXHR,status,error){
+        console.error(error);
+      }
+    }
+  )
+}
 
 function getTodos(callback){
   console.log('getting todos from server')
