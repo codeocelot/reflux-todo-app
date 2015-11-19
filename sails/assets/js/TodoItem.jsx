@@ -20,13 +20,11 @@ module.exports = React.createClass({
     return(
       <Card>
         <CardHeader
-          title = {this.props.content}
-          >
+          title = {this.props.content}>
           <FlatButton label="Done" />
           <FlatButton label="Delete" onClick={this.handleDeleteTodo}/>
         </CardHeader>
         <CardActions>
-
         </CardActions>
       </Card>
     )

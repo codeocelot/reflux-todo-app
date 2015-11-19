@@ -21055,7 +21055,6 @@
 	var Reflux = __webpack_require__(159)
 
 	module.exports = Reflux.createActions([
-	  'someAction',
 	  'addTodo',
 	  'getTodosFromServer',
 	  'updateList',
@@ -21096,19 +21095,16 @@
 	const ThemeManager = __webpack_require__(474);
 
 	module.exports = React.createClass({displayName: "module.exports",
-
+	  mixins:[Reflux.connect(todoStore,'todos'),LinkedStateMixin],
 	  //the key passed through context must be called "muiTheme"
 	  childContextTypes : {
 	    muiTheme: React.PropTypes.object,
 	  },
-
 	  getChildContext:function() {
 	    return {
 	      muiTheme: ThemeManager.getMuiTheme(PurpleTheme),
 	    };
 	  },
-
-	  mixins:[Reflux.connect(todoStore,'todos'),LinkedStateMixin],
 	  getInitialState:function(){
 	    return {
 	      todos:[],
@@ -21121,9 +21117,6 @@
 	  },
 	  componentDidMount:function(){
 	    todoActions.updateList();
-	  },
-	  handleClick:function(){
-	    todoActions.someAction('passed from first component')
 	  },
 	  handleNewTodo:function(evt){
 	    todoActions.addTodo(this.state.todoinput);
@@ -21141,16 +21134,12 @@
 	              React.createElement(FlatButton, {label: "Add Todo Item", onClick: this.handleNewTodo})
 	          ), 
 	          React.createElement(CardActions, null
-
 	          )
 	        ), 
 	        React.createElement(TodoList, {todos: this.state.todos}, 
 	          this.state
 	        )
 	      )
-
-
-
 	    )
 	  }
 	})
@@ -21400,14 +21389,9 @@
 
 	module.exports = Reflux.createStore({
 	  listenables:[Actions],
-	  onSomeAction(){
-	    console.log('some action executed')
-	    console.log( `${++i}`)
-	  },
 	  onAddTodo(content){
-	    //do somethnig
-	    $.post('http://localhost:1337/todo',{content,status:'incomplete'})
-	    this.updateList();
+	    $.post('http://localhost:1337/todo',{content,status:'incomplete'},(data,status,jqXHR)=>{
+	    });
 	  },
 	  onUpdateList(){
 	    this.updateList();
@@ -21423,8 +21407,6 @@
 	    );
 	    deleteToNet(id,()=>{/* completed sending  here*/})
 	    this.trigger(this.todos);
-
-
 	  },
 	  updateList(){
 	    getTodos((err,data,jwt)=>{
@@ -21434,8 +21416,10 @@
 	    })
 	  },
 	  onNetCreate(evt){
-	    this.todos = this.todos.concat(evt.data);
-	    this.trigger(this.todos)
+	    if(!_.findWhere(this.todos,{id:evt.data.id})){
+	      this.todos = this.todos.concat(evt.data);
+	    }
+	    this.trigger(this.todos);
 	  },
 	  onNetDestroy(evt){
 	    var id = evt.id;
@@ -21468,15 +21452,6 @@
 	  SOCKET EVENTS
 	*/
 
-	// io.socket.on('todo',(evt)=>{
-	//
-	// });
-	//
-	// /*
-	//   DATA ACCESS
-	//   on load, etc.
-	// */
-	//
 	var getTodos = callback=>{
 	  io.socket.get('/todo',function(body,JWR){
 	    console.log("res from todo",body);
@@ -21484,53 +21459,12 @@
 	      callback(null,body,JWR)
 	  })
 	}
-
 	var deleteToNet = (id,callback) =>{
 	  io.socket.delete(`/todo/${id}`,function(res){
 	    // todo
 	    callback(null,res);
 	  })
 	}
-
-
-	// var updateTodo = callback =>{
-	  // io.socket.on('todo',function(evt){
-	  //   console.log('an event: ', evt);
-	  //   switch(evt.verb){
-	  //     case 'delete':
-	  //       console.log('delete');
-	  //       break;
-	  //     case 'created':
-	  //       console.log('update');
-	  //       this.todos = this.todos.concat(evt.data);
-	  //       thistrigger(this.todos);
-	  //       break;
-	  //   };
-	  // })
-	// }
-	//
-	// var notifyDelete = callback=>{
-	//
-	// }
-	//
-	// var getTodos = callback=>{
-	//   io.socket.get('/todo',function(body,JWR){
-	//     console.log("res from todo",body);
-	//     if(callback)
-	//       callback(body,JWR)
-	//   })
-	// }
-	// function getTodos(callback){
-	//   $.get('http://localhost:1337/todo',function(data,status,jqXHR){
-	//     //TODO: validate good data came from server
-	//     callback(data);
-	//   })
-	// }
-
-	// io.socket.on('todo',function(event){
-	//   console.log('an update occured on todo: ', event);
-	//   getTodos();
-	// })
 
 
 /***/ },
@@ -90058,11 +89992,10 @@
 	var socketIOClient = __webpack_require__(382);
 	var io = sailsIOClient(socketIOClient)
 
-
 	module.exports = React.createClass({displayName: "module.exports",
 	  getInitialState:function(){
 	    return{
-
+	      todos:[]
 	    }
 	  },
 	  componentDidMount:function(){
@@ -90130,13 +90063,11 @@
 	    return(
 	      React.createElement(Card, null, 
 	        React.createElement(CardHeader, {
-	          title: this.props.content
-	          }, 
+	          title: this.props.content}, 
 	          React.createElement(FlatButton, {label: "Done"}), 
 	          React.createElement(FlatButton, {label: "Delete", onClick: this.handleDeleteTodo})
 	        ), 
 	        React.createElement(CardActions, null
-
 	        )
 	      )
 	    )

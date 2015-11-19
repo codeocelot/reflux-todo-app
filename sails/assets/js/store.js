@@ -8,14 +8,9 @@ var io = sailsIOClient(socketIOClient)
 
 module.exports = Reflux.createStore({
   listenables:[Actions],
-  onSomeAction(){
-    console.log('some action executed')
-    console.log( `${++i}`)
-  },
   onAddTodo(content){
-    //do somethnig
-    $.post('http://localhost:1337/todo',{content,status:'incomplete'})
-    this.updateList();
+    $.post('http://localhost:1337/todo',{content,status:'incomplete'},(data,status,jqXHR)=>{
+    });
   },
   onUpdateList(){
     this.updateList();
@@ -31,8 +26,6 @@ module.exports = Reflux.createStore({
     );
     deleteToNet(id,()=>{/* completed sending  here*/})
     this.trigger(this.todos);
-
-
   },
   updateList(){
     getTodos((err,data,jwt)=>{
@@ -42,8 +35,10 @@ module.exports = Reflux.createStore({
     })
   },
   onNetCreate(evt){
-    this.todos = this.todos.concat(evt.data);
-    this.trigger(this.todos)
+    if(!_.findWhere(this.todos,{id:evt.data.id})){
+      this.todos = this.todos.concat(evt.data);
+    }
+    this.trigger(this.todos);
   },
   onNetDestroy(evt){
     var id = evt.id;
@@ -55,6 +50,9 @@ module.exports = Reflux.createStore({
       )
     );
     this.trigger(this.todos);
+  },
+  onUpdateStatus(evt,status){
+
   }
 })
 
@@ -76,15 +74,6 @@ function rmTodo(id){
   SOCKET EVENTS
 */
 
-// io.socket.on('todo',(evt)=>{
-//
-// });
-//
-// /*
-//   DATA ACCESS
-//   on load, etc.
-// */
-//
 var getTodos = callback=>{
   io.socket.get('/todo',function(body,JWR){
     console.log("res from todo",body);
@@ -92,50 +81,9 @@ var getTodos = callback=>{
       callback(null,body,JWR)
   })
 }
-
 var deleteToNet = (id,callback) =>{
   io.socket.delete(`/todo/${id}`,function(res){
     // todo
     callback(null,res);
   })
 }
-
-
-// var updateTodo = callback =>{
-  // io.socket.on('todo',function(evt){
-  //   console.log('an event: ', evt);
-  //   switch(evt.verb){
-  //     case 'delete':
-  //       console.log('delete');
-  //       break;
-  //     case 'created':
-  //       console.log('update');
-  //       this.todos = this.todos.concat(evt.data);
-  //       thistrigger(this.todos);
-  //       break;
-  //   };
-  // })
-// }
-//
-// var notifyDelete = callback=>{
-//
-// }
-//
-// var getTodos = callback=>{
-//   io.socket.get('/todo',function(body,JWR){
-//     console.log("res from todo",body);
-//     if(callback)
-//       callback(body,JWR)
-//   })
-// }
-// function getTodos(callback){
-//   $.get('http://localhost:1337/todo',function(data,status,jqXHR){
-//     //TODO: validate good data came from server
-//     callback(data);
-//   })
-// }
-
-// io.socket.on('todo',function(event){
-//   console.log('an update occured on todo: ', event);
-//   getTodos();
-// })

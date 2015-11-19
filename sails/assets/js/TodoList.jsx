@@ -5,11 +5,10 @@ var sailsIOClient = require('./dependencies/sails.io.js');
 var socketIOClient = require('socket.io-client');
 var io = sailsIOClient(socketIOClient)
 
-
 module.exports = React.createClass({
   getInitialState(){
     return{
-
+      todos:[]
     }
   },
   componentDidMount(){

@@ -25,19 +25,16 @@ const PurpleTheme = require('./theme')
 const ThemeManager = require('material-ui/lib/styles/theme-manager');
 
 module.exports = React.createClass({
-
+  mixins:[Reflux.connect(todoStore,'todos'),LinkedStateMixin],
   //the key passed through context must be called "muiTheme"
   childContextTypes : {
     muiTheme: React.PropTypes.object,
   },
-
   getChildContext() {
     return {
       muiTheme: ThemeManager.getMuiTheme(PurpleTheme),
     };
   },
-
-  mixins:[Reflux.connect(todoStore,'todos'),LinkedStateMixin],
   getInitialState(){
     return {
       todos:[],
@@ -50,9 +47,6 @@ module.exports = React.createClass({
   },
   componentDidMount(){
     todoActions.updateList();
-  },
-  handleClick(){
-    todoActions.someAction('passed from first component')
   },
   handleNewTodo(evt){
     todoActions.addTodo(this.state.todoinput);
@@ -70,16 +64,12 @@ module.exports = React.createClass({
               <FlatButton label="Add Todo Item" onClick={this.handleNewTodo}/>
           </CardHeader>
           <CardActions>
-
           </CardActions>
         </Card>
         <TodoList todos={this.state.todos}>
           {this.state}
         </TodoList>
       </div>
-
-
-
     )
   }
 })
