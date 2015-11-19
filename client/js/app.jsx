@@ -2,15 +2,12 @@
   console.log('in app.js')
     const React = window.React = require('react')
     const Reflux = window.Reflux = require('reflux')
-    
+
     var Actions = require('./actions')
-    var Component = require('./firstComponent')
+    var TodoMain = require('./TodoMain')
 
     React.render(
-      <div>
-        <h1>Hi world</h1>
-        <Component/>
-      </div>
+      <TodoMain/>
       ,
-        document.getElementById('react-app'))
+      document.getElementById('react-app'))
 })();

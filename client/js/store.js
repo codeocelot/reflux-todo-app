@@ -1,9 +1,7 @@
 var Actions = require('./actions');
 var Reflux = require('reflux');
-var $ = require('jquery');
+var $ = window.jQuery = require('jquery');
 var _ = require('underscore')
-var i = 0;
-var localStore = [];
 module.exports = Reflux.createStore({
   listenables:[Actions],
   onSomeAction(){
@@ -12,7 +10,7 @@ module.exports = Reflux.createStore({
   },
   onAddTodo(content){
     //do somethnig
-    $.post('http://localhost:1337/todo',{content})
+    $.post('http://localhost:1337/todo',{content,status:'incomplete'})
     this.updateList();
   },
   onUpdateList(){
@@ -44,7 +42,7 @@ function rmTodo(id){
     ,{
       method:"DELETE",
       success:function(){
-        console.log('successful deleting');
+        // console.log('successful deleting');
       },
       error:function(jqXHR,status,error){
         console.error(error);
@@ -54,11 +52,8 @@ function rmTodo(id){
 }
 
 function getTodos(callback){
-  console.log('getting todos from server')
   $.get('http://localhost:1337/todo',function(data,status,jqXHR){
     //TODO: validate good data came from server
-    localStore = data;
-    console.log('got ', localStore)
     callback(data);
   })
 }

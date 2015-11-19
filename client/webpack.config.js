@@ -2,7 +2,10 @@ var webpack = require('webpack');
 
 module.exports = {
 	entry: [
-    './js/app.jsx',
+    './js/app.jsx'
+    ,'./node_modules/bootstrap-material-design/dist/css/material.min.css',
+    ,'./node_modules/bootstrap-material-design/dist/js/material.min.js',
+    ,'./sass/style.scss'
 		// './node_modules/bootstrap/dist/css/bootstrap.css',
 		// './node_modules/bootstrap/dist/css/bootstrap-theme.css',
 		// './css/style.css',
@@ -16,8 +19,10 @@ module.exports = {
 	},
 	module: {
 		loaders: [
-			{ test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-			{ test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" },
+			{ test: /\.woff(2)?.*/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
+			{ test: /\.(ttf|eot|svg).*/, loader: "file-loader" },
+      {test:/.*\.scss$/,loaders:["style","css","sass"]},
+
 			{include:/.*\.css/, loader:"style-loader!css-loader"},
 			{include: /.*\.jsx/, loaders: ['jsx-loader?harmony']}
 		]
