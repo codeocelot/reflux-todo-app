@@ -11,7 +11,7 @@ module.exports = {
 		// './node_modules/bootstrap/dist/css/bootstrap-theme.css',
 		// './css/style.css',
 		// './js/app.jsx',
-		// './node_modules/font-awesome/css/font-awesome.css',
+		,'./node_modules/font-awesome/css/font-awesome.css',
 
 	],
 	output: {

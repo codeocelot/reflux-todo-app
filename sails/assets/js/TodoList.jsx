@@ -6,6 +6,8 @@ var actions = require('./actions');
 var sailsIOClient = require('./dependencies/sails.io.js');
 var socketIOClient = require('socket.io-client');
 var io = sailsIOClient(socketIOClient)
+const List = require('material-ui/lib/lists/list');
+
 
 module.exports = React.createClass({
   mixins:[Reflux.connect(todoStore,'todos')],
@@ -48,9 +50,9 @@ module.exports = React.createClass({
     return(
       <div className="panel panel-default">
         <div className="panel-body">
-          <div className="list-group">
+          <List className="list-group">
             {todos}
-          </div>
+          </List>
         </div>
       </div>
     )
