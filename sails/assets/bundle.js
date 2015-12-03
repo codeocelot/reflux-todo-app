@@ -21388,7 +21388,7 @@
 	var _ = __webpack_require__(186);
 	var sailsIOClient = __webpack_require__(187);
 	var socketIOClient = __webpack_require__(382);
-	var io = sailsIOClient(socketIOClient)
+	var io = sailsIOClient(socketIOClient);
 
 	module.exports = Reflux.createStore({
 	  listenables:[Actions],
@@ -21405,7 +21405,6 @@
 	    t.isComplete = (t.status === 'done');
 	    console.log('in update todo')
 	    putToNet(t);
-
 	    this.trigger(this.todos);
 	  },
 	  onDeleteTodo(id){
@@ -21455,10 +21454,8 @@
 	    this.trigger(this.todos);
 	  },
 	  onUpdateStatus(evt,status){
-
 	  }
 	})
-
 	function rmTodo(id){
 	  $.ajax(`http://localhost:1337/todo/${id}`
 	    ,{

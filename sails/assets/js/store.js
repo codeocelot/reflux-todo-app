@@ -4,7 +4,7 @@ var $ = window.jQuery = require('jquery');
 var _ = require('underscore');
 var sailsIOClient = require('./dependencies/sails.io.js');
 var socketIOClient = require('socket.io-client');
-var io = sailsIOClient(socketIOClient)
+var io = sailsIOClient(socketIOClient);
 
 module.exports = Reflux.createStore({
   listenables:[Actions],
@@ -21,7 +21,6 @@ module.exports = Reflux.createStore({
     t.isComplete = (t.status === 'done');
     console.log('in update todo')
     putToNet(t);
-
     this.trigger(this.todos);
   },
   onDeleteTodo(id){
@@ -71,10 +70,8 @@ module.exports = Reflux.createStore({
     this.trigger(this.todos);
   },
   onUpdateStatus(evt,status){
-
   }
 })
-
 function rmTodo(id){
   $.ajax(`http://localhost:1337/todo/${id}`
     ,{
